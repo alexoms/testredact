@@ -1,0 +1,28 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3007:80"
+    depends_on:
+      - app
+
+  app:
+    build: ./backend
+    ports:
+      - "16250:16250"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend/pdfs:/app/pdfs
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "28017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
